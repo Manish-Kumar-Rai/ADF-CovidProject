@@ -7,6 +7,12 @@
 		},
 		"ls_ablob_covidreportingsa_connectionString": {
 			"value": ""
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
 		}
 	}
 }
