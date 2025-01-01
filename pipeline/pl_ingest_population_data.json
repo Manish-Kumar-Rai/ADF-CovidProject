@@ -169,14 +169,7 @@
 									"referenceName": "ds_population_raw_gz",
 									"type": "DatasetReference"
 								},
-								"logStorageSettings": {
-									"linkedServiceName": {
-										"referenceName": "ls_ablob_covidreportingsa",
-										"type": "LinkedServiceReference"
-									},
-									"path": "population"
-								},
-								"enableLogging": true,
+								"enableLogging": false,
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
