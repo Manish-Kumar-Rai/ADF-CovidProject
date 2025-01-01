@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_ablob_covidreportingsa'"
 		},
+		"tr_ingest_population_data_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/1e128322-0739-4ad7-8ec7-b4e9e4703cfc/resourceGroups/cdu-learning-rg/providers/Microsoft.Storage/storageAccounts/covidprojectvistula"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -40,6 +44,9 @@
 					},
 					"ls_ablob_covidreportingsa_connectionString": {
 						"value": "[parameters('ls_ablob_covidreportingsa_connectionString')]"
+					},
+					"tr_ingest_population_data_properties_typeProperties_scope": {
+						"value": "[parameters('tr_ingest_population_data_properties_typeProperties_scope')]"
 					}
 				}
 			},

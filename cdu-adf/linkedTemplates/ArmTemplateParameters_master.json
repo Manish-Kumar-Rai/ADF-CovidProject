@@ -8,6 +8,9 @@
 		"ls_ablob_covidreportingsa_connectionString": {
 			"value": ""
 		},
+		"tr_ingest_population_data_properties_typeProperties_scope": {
+			"value": "/subscriptions/1e128322-0739-4ad7-8ec7-b4e9e4703cfc/resourceGroups/cdu-learning-rg/providers/Microsoft.Storage/storageAccounts/covidprojectvistula"
+		},
 		"containerUri": {
 			"value": ""
 		},
