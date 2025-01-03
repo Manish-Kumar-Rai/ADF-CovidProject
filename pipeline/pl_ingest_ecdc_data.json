@@ -95,7 +95,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"ParamCurrentSourceFile": {
-											"value": "@item().sourcRelativeURL",
+											"value": "@item().sourceRelativeURL",
 											"type": "Expression"
 										},
 										"ParamSourceBaseURL": {
