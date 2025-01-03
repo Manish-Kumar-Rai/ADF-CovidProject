@@ -18,15 +18,6 @@
 		"tr_ingest_population_data_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/1e128322-0739-4ad7-8ec7-b4e9e4703cfc/resourceGroups/cdu-learning-rg/providers/Microsoft.Storage/storageAccounts/covidprojectvistula"
-		},
-		"tr_ingest_ecdc_data_properties_pl_ingest_ecdc_data_parameters_FilesArray": {
-			"type": "array",
-			"defaultValue": [
-				"cases_deaths.csv",
-				"country_response.csv",
-				"hospital_admissions.csv",
-				"testing.csv"
-			]
 		}
 	},
 	"variables": {
@@ -110,6 +101,9 @@
 				"parameters": {
 					"ParamCurrentSourceFile": {
 						"type": "string"
+					},
+					"ParamSourceBaseURL": {
+						"type": "string"
 					}
 				},
 				"annotations": [],
@@ -118,7 +112,7 @@
 					"location": {
 						"type": "HttpServerLocation",
 						"relativeUrl": {
-							"value": "@concat('cloudboxacademy/covid19/raw/main/ecdc_data/',dataset().ParamCurrentSourceFile)",
+							"value": "@dataset().ParamCurrentSourceFile",
 							"type": "Expression"
 						}
 					},
@@ -193,6 +187,43 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_ecdc_file_list')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_ablob_covidreportingsa",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "github_ecdc_file_list.json",
+						"container": "configs"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"sourceBaseURL": {
+							"type": "string"
+						},
+						"sourceRelativeURL": {
+							"type": "string"
+						},
+						"sinkFileName": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_ablob_covidreportingsa')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pl_ingest_ecdc_data')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -201,17 +232,24 @@
 					{
 						"name": "Copy Each File",
 						"type": "ForEach",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Lookup Files",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@pipeline().parameters.FilesArray",
+								"value": "@activity('Lookup Files').output.value",
 								"type": "Expression"
 							},
 							"isSequential": true,
 							"activities": [
 								{
-									"name": "CurrentSourceFile",
+									"name": "SET sourceaBaseURL",
 									"type": "SetVariable",
 									"dependsOn": [],
 									"policy": {
@@ -220,9 +258,9 @@
 									},
 									"userProperties": [],
 									"typeProperties": {
-										"variableName": "FileName",
+										"variableName": "sourceBaseURL",
 										"value": {
-											"value": "@item()",
+											"value": "@item().sourceBaseURL",
 											"type": "Expression"
 										}
 									}
@@ -232,7 +270,7 @@
 									"type": "Copy",
 									"dependsOn": [
 										{
-											"activity": "CurrentSourceFile",
+											"activity": "SET sourceaBaseURL",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -284,7 +322,11 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"ParamCurrentSourceFile": {
-													"value": "@variables('FileName')",
+													"value": "@item().sourcRelativeURL",
+													"type": "Expression"
+												},
+												"ParamSourceBaseURL": {
+													"value": "@variables('sourceBaseURL')",
 													"type": "Expression"
 												}
 											}
@@ -296,7 +338,7 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"ParamCurrentTargetFile": {
-													"value": "@variables('FileName')",
+													"value": "@item().sinkFileName",
 													"type": "Expression"
 												}
 											}
@@ -305,30 +347,52 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "Lookup Files",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "ds_ecdc_file_list",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
-				"parameters": {
-					"FilesArray": {
-						"type": "array",
-						"defaultValue": [
-							"cases_deaths.csv",
-							"country_response.csv",
-							"hospital_admissions.csv",
-							"testing.csv"
-						]
-					}
-				},
 				"variables": {
-					"FileName": {
+					"sourceBaseURL": {
 						"type": "String"
 					}
 				},
 				"annotations": []
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_ecdc_file_list')]",
 				"[concat(variables('factoryId'), '/datasets/ds_ecdc_raw_csv_http')]",
 				"[concat(variables('factoryId'), '/datasets/ds_ecdc_raw_csv_dl')]"
 			]
@@ -577,9 +641,7 @@
 							"referenceName": "pl_ingest_ecdc_data",
 							"type": "PipelineReference"
 						},
-						"parameters": {
-							"FilesArray": "[parameters('tr_ingest_ecdc_data_properties_pl_ingest_ecdc_data_parameters_FilesArray')]"
-						}
+						"parameters": {}
 					}
 				],
 				"type": "ScheduleTrigger",
@@ -587,7 +649,7 @@
 					"recurrence": {
 						"frequency": "Hour",
 						"interval": 15,
-						"startTime": "2025-01-03T13:18:00",
+						"startTime": "2025-01-03T13:44:00",
 						"endTime": "2025-01-04T12:14:00",
 						"timeZone": "Central European Standard Time"
 					}

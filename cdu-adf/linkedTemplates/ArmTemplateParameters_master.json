@@ -14,14 +14,6 @@
 		"tr_ingest_population_data_properties_typeProperties_scope": {
 			"value": "/subscriptions/1e128322-0739-4ad7-8ec7-b4e9e4703cfc/resourceGroups/cdu-learning-rg/providers/Microsoft.Storage/storageAccounts/covidprojectvistula"
 		},
-		"tr_ingest_ecdc_data_properties_pl_ingest_ecdc_data_parameters_FilesArray": {
-			"value": [
-				"cases_deaths.csv",
-				"country_response.csv",
-				"hospital_admissions.csv",
-				"testing.csv"
-			]
-		},
 		"containerUri": {
 			"value": ""
 		},
