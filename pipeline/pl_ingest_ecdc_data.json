@@ -32,7 +32,7 @@
 							}
 						},
 						{
-							"name": "Copy Cases And Death Data",
+							"name": "Copy ECDC Data",
 							"type": "Copy",
 							"dependsOn": [
 								{
