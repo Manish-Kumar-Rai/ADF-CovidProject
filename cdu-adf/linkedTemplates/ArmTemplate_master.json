@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_ablob_covidreportingsa'"
 		},
+		"ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://github.com"
+		},
 		"tr_ingest_population_data_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/1e128322-0739-4ad7-8ec7-b4e9e4703cfc/resourceGroups/cdu-learning-rg/providers/Microsoft.Storage/storageAccounts/covidprojectvistula"
@@ -44,6 +48,9 @@
 					},
 					"ls_ablob_covidreportingsa_connectionString": {
 						"value": "[parameters('ls_ablob_covidreportingsa_connectionString')]"
+					},
+					"ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url": {
+						"value": "[parameters('ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url')]"
 					},
 					"tr_ingest_population_data_properties_typeProperties_scope": {
 						"value": "[parameters('tr_ingest_population_data_properties_typeProperties_scope')]"
