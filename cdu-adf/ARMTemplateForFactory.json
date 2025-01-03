@@ -123,7 +123,7 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"ParamCurrentSourceFile": {
-													"value": "@item().sourcRelativeURL",
+													"value": "@item().sourceRelativeURL",
 													"type": "Expression"
 												},
 												"ParamSourceBaseURL": {
@@ -612,7 +612,7 @@
 					"recurrence": {
 						"frequency": "Hour",
 						"interval": 15,
-						"startTime": "2025-01-03T13:44:00",
+						"startTime": "2025-01-03T13:48:00",
 						"endTime": "2025-01-04T12:14:00",
 						"timeZone": "Central European Standard Time"
 					}
