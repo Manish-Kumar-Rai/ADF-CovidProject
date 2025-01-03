@@ -5,17 +5,24 @@
 			{
 				"name": "Copy Each File",
 				"type": "ForEach",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Lookup Files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@pipeline().parameters.FilesArray",
+						"value": "@activity('Lookup Files').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "CurrentSourceFile",
+							"name": "SET sourceaBaseURL",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"policy": {
@@ -24,9 +31,9 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "FileName",
+								"variableName": "sourceBaseURL",
 								"value": {
-									"value": "@item()",
+									"value": "@item().sourceBaseURL",
 									"type": "Expression"
 								}
 							}
@@ -36,7 +43,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "CurrentSourceFile",
+									"activity": "SET sourceaBaseURL",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -88,7 +95,11 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"ParamCurrentSourceFile": {
-											"value": "@variables('FileName')",
+											"value": "@item().sourcRelativeURL",
+											"type": "Expression"
+										},
+										"ParamSourceBaseURL": {
+											"value": "@variables('sourceBaseURL')",
 											"type": "Expression"
 										}
 									}
@@ -100,7 +111,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"ParamCurrentTargetFile": {
-											"value": "@variables('FileName')",
+											"value": "@item().sinkFileName",
 											"type": "Expression"
 										}
 									}
@@ -109,21 +120,41 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Lookup Files",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "ds_ecdc_file_list",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
 			}
 		],
-		"parameters": {
-			"FilesArray": {
-				"type": "array",
-				"defaultValue": [
-					"cases_deaths.csv",
-					"country_response.csv",
-					"hospital_admissions.csv",
-					"testing.csv"
-				]
-			}
-		},
 		"variables": {
-			"FileName": {
+			"sourceBaseURL": {
 				"type": "String"
 			}
 		},
