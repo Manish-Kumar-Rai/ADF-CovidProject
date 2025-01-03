@@ -1,65 +1,132 @@
 {
-	"name": "pl_ingest_cases_deaths_data",
+	"name": "pl_ingest_ecdc_data",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy Cases And Death Data",
-				"type": "Copy",
+				"name": "Copy Each File",
+				"type": "ForEach",
 				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "HttpReadSettings",
-							"requestMethod": "GET"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
+					"items": {
+						"value": "@pipeline().parameters.FilesArray",
+						"type": "Expression"
 					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "CurrentSourceFile",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "FileName",
+								"value": {
+									"value": "@item()",
+									"type": "Expression"
+								}
+							}
 						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
+						{
+							"name": "Copy Cases And Death Data",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "CurrentSourceFile",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"requestMethod": "GET"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_ecdc_raw_csv_http",
+									"type": "DatasetReference",
+									"parameters": {
+										"ParamCurrentSourceFile": {
+											"value": "@variables('FileName')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_ecdc_raw_csv_dl",
+									"type": "DatasetReference",
+									"parameters": {
+										"ParamCurrentTargetFile": {
+											"value": "@variables('FileName')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
 						}
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "ds_cases_deaths_raw_csv_http",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "ds_cases_deaths_raw_csv_dl",
-						"type": "DatasetReference"
-					}
-				]
+					]
+				}
 			}
 		],
+		"parameters": {
+			"FilesArray": {
+				"type": "array",
+				"defaultValue": [
+					"cases_deaths.csv",
+					"country_response.csv",
+					"hospital_admissions.csv",
+					"testing.csv"
+				]
+			}
+		},
+		"variables": {
+			"FileName": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }

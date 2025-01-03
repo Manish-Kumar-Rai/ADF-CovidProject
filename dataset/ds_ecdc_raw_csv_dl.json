@@ -1,16 +1,24 @@
 {
-	"name": "ds_cases_deaths_raw_csv_dl",
+	"name": "ds_ecdc_raw_csv_dl",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_ablob_covidreportingsa",
 			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"ParamCurrentTargetFile": {
+				"type": "string"
+			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "cases_deaths.csv",
+				"fileName": {
+					"value": "@dataset().ParamCurrentTargetFile",
+					"type": "Expression"
+				},
 				"folderPath": "ecdc",
 				"container": "raw"
 			},
