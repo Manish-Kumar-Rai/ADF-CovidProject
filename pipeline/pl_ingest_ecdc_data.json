@@ -94,12 +94,12 @@
 									"referenceName": "ds_ecdc_raw_csv_http",
 									"type": "DatasetReference",
 									"parameters": {
-										"ParamCurrentSourceFile": {
+										"ParamSourceURL": {
 											"value": "@item().sourceRelativeURL",
 											"type": "Expression"
 										},
-										"ParamSourceBaseURL": {
-											"value": "@variables('sourceBaseURL')",
+										"ParamBaseURL": {
+											"value": "@item().sourceBaseURL",
 											"type": "Expression"
 										}
 									}
