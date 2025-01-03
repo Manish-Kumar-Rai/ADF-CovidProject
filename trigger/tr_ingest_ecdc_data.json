@@ -24,7 +24,7 @@
 			"recurrence": {
 				"frequency": "Hour",
 				"interval": 15,
-				"startTime": "2025-01-03T13:16:00",
+				"startTime": "2025-01-03T13:18:00",
 				"endTime": "2025-01-04T12:14:00",
 				"timeZone": "Central European Standard Time"
 			}
