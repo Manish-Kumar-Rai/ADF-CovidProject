@@ -1,0 +1,12 @@
+{
+	"name": "ls_http_opendata_ecdc_europa_eu",
+	"properties": {
+		"annotations": [],
+		"type": "HttpServer",
+		"typeProperties": {
+			"url": "https://github.com/cloudboxacademy/covid19/blob/main/ecdc_data/cases_deaths.csv",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
