@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup Files').output.value",
+						"value": "@activity('Lookup ECDC File List').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
