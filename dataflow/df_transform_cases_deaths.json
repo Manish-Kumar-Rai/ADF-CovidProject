@@ -78,8 +78,8 @@
 				"          indicator,",
 				"          daily_count,",
 				"          source,",
-				"          each(match(name == 'date'),",
-				"               'reported_' + $$ = $$)",
+				"          each(match(name=='date'),",
+				"               'reported_'+$$ = $$)",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> SelectOnlyRequiredFields",
@@ -110,6 +110,7 @@
 				"     skipDuplicateMapOutputs: true) ~> SelectForSink",
 				"SelectForSink sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     partitionFileNames:['cases_and_deaths.csv'],",
 				"     truncate: true,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
@@ -122,7 +123,8 @@
 				"          deaths_count,",
 				"          reported_date,",
 				"          source",
-				"     )) ~> CasesAndDeathsSink"
+				"     ),",
+				"     partitionBy('hash', 1)) ~> CasesAndDeathsSink"
 			]
 		}
 	}
