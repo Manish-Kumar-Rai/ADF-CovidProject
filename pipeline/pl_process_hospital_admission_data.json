@@ -1,9 +1,9 @@
 {
-	"name": "pipeline1",
+	"name": "pl_process_hospital_admission_data",
 	"properties": {
 		"activities": [
 			{
-				"name": "Data flow1",
+				"name": "df_transform_hospital_admissions",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
