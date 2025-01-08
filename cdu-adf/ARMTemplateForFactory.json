@@ -513,7 +513,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": "country_lookup.csv",
-						"folderPath": "lookup",
+						"folderPath": "lookup/country_lookup",
 						"container": "raw"
 					},
 					"columnDelimiter": ",",
@@ -563,7 +563,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": "dim_date.csv",
-						"folderPath": "lookup",
+						"folderPath": "lookup/dim_date",
 						"container": "raw"
 					},
 					"columnDelimiter": ",",
@@ -727,7 +727,11 @@
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
-						"type": "HttpServerLocation"
+						"type": "HttpServerLocation",
+						"relativeUrl": {
+							"value": "@dataset().ParamSourceURL",
+							"type": "Expression"
+						}
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -900,7 +904,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": "cases_deaths.csv",
-						"folderPath": "ecdc",
+						"folderPath": "ecdc/cases_deaths",
 						"container": "raw"
 					},
 					"columnDelimiter": ",",
@@ -966,7 +970,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": "hospital_admissions.csv",
-						"folderPath": "ecdc",
+						"folderPath": "ecdc/hospital_admissions",
 						"container": "raw"
 					},
 					"columnDelimiter": ",",
