@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "dim_date.csv",
-				"folderPath": "lookup",
+				"folderPath": "lookup/dim_date",
 				"container": "raw"
 			},
 			"columnDelimiter": ",",
