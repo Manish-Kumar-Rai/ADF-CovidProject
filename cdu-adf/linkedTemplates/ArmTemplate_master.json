@@ -39,7 +39,7 @@
 			"type": "string",
 			"defaultValue": "sqladmin"
 		},
-		"tr_ingest_population_data_properties_typeProperties_scope": {
+		"tr_population_data_arrived_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/1e128322-0739-4ad7-8ec7-b4e9e4703cfc/resourceGroups/cdu-learning-rg/providers/Microsoft.Storage/storageAccounts/covidprojectvistula"
 		},
@@ -112,8 +112,8 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"tr_ingest_population_data_properties_typeProperties_scope": {
-						"value": "[parameters('tr_ingest_population_data_properties_typeProperties_scope')]"
+					"tr_population_data_arrived_properties_typeProperties_scope": {
+						"value": "[parameters('tr_population_data_arrived_properties_typeProperties_scope')]"
 					}
 				}
 			},
