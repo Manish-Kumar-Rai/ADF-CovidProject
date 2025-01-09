@@ -21,7 +21,7 @@
 		},
 		"ls_db_covid_cluster_properties_typeProperties_existingClusterId": {
 			"type": "string",
-			"defaultValue": "0108-223530-acmkuy94"
+			"defaultValue": "0109-115306-dct0llsw"
 		},
 		"ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url": {
 			"type": "string",
