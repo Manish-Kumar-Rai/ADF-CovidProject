@@ -11,11 +11,23 @@
 		"ls_db_covid_cluster_accessToken": {
 			"value": ""
 		},
+		"ls_sql_covid_db_password": {
+			"value": ""
+		},
 		"ls_db_covid_cluster_properties_typeProperties_existingClusterId": {
 			"value": "0108-223530-acmkuy94"
 		},
 		"ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url": {
 			"value": "@{linkedService().sourceBaseURL}"
+		},
+		"ls_sql_covid_db_properties_typeProperties_server": {
+			"value": "cdu-mysqldb-server.database.windows.net"
+		},
+		"ls_sql_covid_db_properties_typeProperties_database": {
+			"value": "cdu-mysqldb"
+		},
+		"ls_sql_covid_db_properties_typeProperties_userName": {
+			"value": "sqladmin"
 		},
 		"tr_ingest_population_data_properties_typeProperties_scope": {
 			"value": "/subscriptions/1e128322-0739-4ad7-8ec7-b4e9e4703cfc/resourceGroups/cdu-learning-rg/providers/Microsoft.Storage/storageAccounts/covidprojectvistula"
